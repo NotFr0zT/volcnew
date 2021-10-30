@@ -138,12 +138,19 @@ module.exports = {
         }
         if (az === 'suggest' || az === 's') {
             if (!userinfo.developer && !message.member.permissions.has('ADMINISTRATOR')) return message.reply('Lol no permissions, what did you expect to happen')
-            if (ao.toLowerCase() === 'none') {
-                schannel.deleteMany({ gid: message.guild.id })
-                return message.reply('Succesfully removed the suggestion\'s channel!')
-            }
             if (!ao) {
-                return message.reply(`Your channel is ${chs(sugmodel.channel)}`)
+                return message.reply(`Your channel is ${chs()}`)
+            }
+            if (ao.toLowerCase() === 'none') {
+                schannel.findOneAndDelete({ gid: message.guild.id }, function (err) {
+                    if (err) {
+                        console.log(err)
+                    }
+                    else {
+                        message.reply('Succesfully removed the suggestion\'s channel!')
+                    }
+                });
+                return
             }
             var channel = message.mentions.channels.last() || message.guild.channels.cache.get(ao)
             if (!channel) return message.reply('You must specify a new channel')
@@ -169,12 +176,19 @@ module.exports = {
         }
         if (az === 'modlog' || az === 'm') {
             if (!userinfo.developer && !message.member.permissions.has('ADMINISTRATOR')) return message.reply('Lol no permissions, what did you expect to happen')
-            if (ao.toLowerCase() === 'none') {
-                mchannel.deleteMany({ gid: message.guild.id })
-                return message.reply('Succesfully removed the modlog\'s channel!')
-            }
             if (!ao) {
-                return message.reply(`Your channel is ${chs(sugmodel.channel)}`)
+                return message.reply(`Your channel is ${chss()}`)
+            }
+            if (ao.toLowerCase() === 'none') {
+                schannel.findOneAndDelete({ gid: message.guild.id }, function (err) {
+                    if (err) {
+                        console.log(err)
+                    }
+                    else {
+                        message.reply('Succesfully removed the suggestion\'s channel!')
+                    }
+                });
+                return
             }
             var channel = message.mentions.channels.last() || message.guild.channels.cache.get(ao)
             if (!channel) return message.reply('You must specify a new channel')

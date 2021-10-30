@@ -18,9 +18,9 @@ module.exports = {
     run: async (client, message, args, prefix, userinfo) => {
 
         const user = message.mentions.users.first();
-        if (!user) return message.reply(`Please specify a user to ship with!`)
+        if (!user) return client.error(`Please specify a user to ship with!`, message)
         if (user && user.id === message.author.id) {
-            return message.reply('Bruh you want to ship yourself xd')
+            return client.error('Bruh you want to ship yourself xd', message)
         }
         if (message.mentions.users.size < 2) {
             let loveEmbed = new MessageEmbed()

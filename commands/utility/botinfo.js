@@ -30,7 +30,12 @@ module.exports = {
 	 * @param {String[]} args 
 	 */
 	run: async (client, message, args, prefix, userinfo) => {
-		console.log(totalMembers)
+		var totalMembers = 0;
+
+		client.guilds.cache.forEach(guild => {
+			totalMembers += guild.memberCount
+		})
+		// console.log(totalMembers)
 		cpuStat.usagePercent((error, percent, seconds) => {
 			if (error) {
 				return console.error(error);

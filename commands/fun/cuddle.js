@@ -21,8 +21,8 @@ module.exports = {
         let owo = (await neko.sfw.cuddle());
 
         const cuddleembed = new MessageEmbed()
-            .setTitle(user.username + " You just got a cuddle! ")
-            .setDescription((user.toString() + " got a cuddle from " + message.author.toString()))
+            .setTitle(user.username + ' You just got a cuddle! ')
+            .setDescription((user.toString() + ' got a cuddle from ' + message.author.toString()))
             .setImage(owo.url)
             .setColor(userinfo.color)
             .setFooter('CUDDLES!')

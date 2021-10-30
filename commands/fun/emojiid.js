@@ -1,4 +1,4 @@
-const { MessageEmbed, Client, Message } = require('discord.js');
+const { MessageEmbed, Client, Message, MessageCollector } = require('discord.js');
 
 
 module.exports = {
@@ -15,14 +15,14 @@ module.exports = {
     * @param {String[]} args
     */
     run: async (client, message, args, prefix, userinfo) => {
-        const name = args.join(" ");
+        const name = args.join(' ');
         const emoji = message.guild.emojis.cache.find(r => r.name.replace(':', ' ') === name);
         if (!name) {
-            return message.reply("Please type the emoji name")
+            return client.error('Please type the emoji name', message)
         }
         if (!emoji) {
-            return message.reply("Couldn't find the Emojis with the provided name. Please make sure the Emoji name is correct and is in the guild!");
+            return client.error('Couldn\'t find the Emojis with the provided name. Please make sure the Emoji name is correct and is in the guild!', message);
         }
-        message.reply(`\`\`\`${emoji}\`\`\``)
+        client.main(`\`\`\`${emoji}\`\`\``, message)
     }
 }

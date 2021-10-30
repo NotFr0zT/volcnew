@@ -16,6 +16,6 @@ module.exports = {
     */
     run: async (client, message, args, prefix, userinfo) => {
 
-        message.reply(`The prefix for ${message.guild.name} is \`${prefix}\``)
+        client.main(`The prefix for ${message.guild.name} is \`${prefix}\``, message)
     },
 };

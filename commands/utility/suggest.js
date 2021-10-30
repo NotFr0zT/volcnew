@@ -19,8 +19,9 @@ module.exports = {
     run: async (client, message, args, prefix, userinfo) => {
 
         const settings = await model.findOne({ gid: message.guild.id })
+        if (!settings) return client.main(`No suggestion channel set. Use\n\n\`\`\`${prefix}settings suggest <channel | none>\`\`\``, message)
         const channel = settings.channel
-        if (channel === undefined) return message.reply(`No suggestion channel set. Use\n\n\`\`\`${prefix}settings suggest <channel | none>\`\`\``)
+        if (!channel) return client.main(`No suggestion channel set. Use\n\n\`\`\`${prefix}settings suggest <channel | none>\`\`\``, message)
 
 
         const suggestionQuery = args.join(" ");

@@ -1,7 +1,6 @@
 require('dotenv').config();
 const Timeout = new Set();
-const { Message, Client } = require('discord.js');
-const Discord = require('discord.js');
+const { Message, Client, MessageEmbed } = require('discord.js');
 const ms = require('ms');
 const guildSettings = require('../../models/settings')
 const custom = require('../../models/custom')
@@ -163,7 +162,7 @@ module.exports = async (client, message) => {
                     return;
                 }
                 else if (!message.member.permissions.has(permission)) {
-                    let embed = new Discord.MessageEmbed()
+                    let embed = new MessageEmbed()
                         .setTitle('Permission Error')
                         .setDescription('Sorry, you don\'t have permissions to use this! ❌')
                         .setColor('DARK_RED')
@@ -178,7 +177,7 @@ module.exports = async (client, message) => {
 
             for (const permission of command.botperms) {
                 if (!message.guild.me.permissions.has(permission)) {
-                    let embed = new Discord.MessageEmbed()
+                    let embed = new MessageEmbed()
                         .setTitle('Permission Error')
                         .setDescription('I don\'t have permissions to use this! ❌')
                         .setColor('DARK_RED')
@@ -198,8 +197,21 @@ module.exports = async (client, message) => {
                 snipe: true,
             }
         }
+        client.error = async (text, message) => {
+            let embed = new MessageEmbed()
+                .setColor('RED')
+                .setDescription(':x: | ' + text)
+                .setFooter('Something went wrong.')
+            await message.reply({ embeds: [embed] })
+        }
+        client.main = async (text, message) => {
+            let embed = new MessageEmbed()
+                .setColor(userinfo.color)
+                .setDescription(text)
+            await message.reply({ embeds: [embed] })
+        }
         if (userinfo.banned) {
-            const embed = new Discord.MessageEmbed()
+            const embed = new MessageEmbed()
                 .setTitle('I think I\'m gonna pass')
                 .setDescription('You seem to have been banned by the developers of the bot')
                 .setColor(userinfo.color)
@@ -207,24 +219,25 @@ module.exports = async (client, message) => {
             return message.reply({ embeds: [embed] })
         }
 
-        if (command.timeout) {
-            if (command.timeout) {
-                var timeou = command.timeout * 1000
-                if (Timeout.has(`${message.user.id}_${command.name}`)) {
-                    await message.reply({ embeds: [{ color: userinfo.color, title: `Take a break`, description: `Ooh Ooh, You are on cooldown\nThe default cooldown of this command is ${parseDur(timeou)}` }] });
-                    return;
-                } else {
-                    Timeout.add(`${message.user.id}_${command.name}`);
-                    setTimeout(() => {
-                        Timeout.delete(`${message.user.id}_${command.name}`);
-                    }, timeou);
-                }
-            }
-        } else {
-            message.userinfo = userinfo
-            let prefix = storedSettings.prefix
-            command.run(client, message, args, prefix, userinfo).catch(console.log)
-        }
+        // if (command.timeout) {
+        //     var timeou = command.timeout * 1000
+        //     if (Timeout.has(`${message.user.id}_${command.name}`)) {
+        //         await message.reply({ embeds: [{ color: userinfo.color, title: `Take a break`, description: `Ooh Ooh, You are on cooldown\nThe default cooldown of this command is ${parseDur(timeou)}` }] });
+        //         return;
+        //     } else {
+        //         Timeout.add(`${message.user.id}_${command.name}`);
+        //         command.run(client, message, args, prefix, userinfo).catch(console.log)
+        //         setTimeout(() => {
+        //             Timeout.delete(`${message.user.id}_${command.name}`);
+        //         }, timeou);
+        //     }
+
+        // } else {
+        message.userinfo = userinfo
+        let prefix = storedSettings.prefix
+        command.run(client, message, args, prefix, userinfo).catch(console.log)
+
+        // }
     } else {
         custom.findOne(
             { Guild: message.guild.id, Command: cmd },

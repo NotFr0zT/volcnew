@@ -13,7 +13,7 @@ module.exports = {
 	botperms: [],
 	run: async (client, message, args, prefix, userinfo) => {
 		giveMeAJoke.getRandomCNJoke(function (joke) {
-			message.reply(joke)
+			client.main(joke, message)
 		})
 	}
 }

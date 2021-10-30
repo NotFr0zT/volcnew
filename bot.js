@@ -4,6 +4,7 @@ require('dotenv').config();
 const fs = require('fs')
 const { Client, Collection, Intents, MessageEmbed } = require('discord.js');
 const mongoose = require('mongoose')
+const userdb = require('./models/userdb')
 const client = new Client({
     allowedMentions: { parse: ['users', 'roles'], repliedUser: false },
     partials: ['MESSAGE', 'CHANNEL', 'REACTION', 'GUILD_MEMBER'],
@@ -23,16 +24,24 @@ mongoose.connect(process.env.MONGO, {
     useNewUrlParser: true,
 });
 
+// ye no
 client.commands = new Collection();
 client.slash = new Collection();
 client.aliases = new Collection();
 client.snipes = new Map();
+client.color = '#f56942'
 client.config = require('./config.json');
 client.error = async (text, message) => {
     let embed = new MessageEmbed()
         .setColor('RED')
         .setDescription(':x: | ' + text)
         .setFooter('Something went wrong.')
+    await message.reply({ embeds: [embed] })
+}
+client.main = async (text, message) => {
+    let embed = new MessageEmbed()
+        .setColor(userinfo.color)
+        .setDescription(text)
     await message.reply({ embeds: [embed] })
 }
 
